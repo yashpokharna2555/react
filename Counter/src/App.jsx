@@ -16,6 +16,10 @@ function App() {
     setCount((prev) => prev+1);
   }
 
+  const reset = () => {
+    setCount(0)
+  }
+
   return (
     <>
       <h1 className="text-3xl font-bold underline">
@@ -27,6 +31,8 @@ function App() {
         <div>Counter: {count}</div>
         <span onClick={() => onInsert2Handler()}>▶️</span>
       </div>
+
+      <button onClick={() => reset()}>Reset</button>
 
     </>
   )
