@@ -5,11 +5,19 @@ import Profile from './components/Profile';
 
 
 function App() {
-  const [count, setCount] = useState(0)
+  const profileList = [
+    {name: "Yash Pokharna", age: 30},
+    {name: "Alex Johnson", age: 20}
+  ]
 
   return (
     <>
-      <Profile />
+      <div>
+        {profileList.map((item,idx) =>(
+          <Profile key={idx} {...item} />
+        ))}
+      </div>
+      
 
     </>
   )
