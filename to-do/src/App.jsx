@@ -4,33 +4,65 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [task, setTask] = useState([])
-  const [complete, setComplete] = useState(0);
+  const [task, setTask] = useState(["Eat"])
+  const [newTask, setNewTask] = useState("");
+  function handleEventChange(e) {
+    setNewTask(e.target.value);
+  }
+  function addTask() {
+    if(newTask.trim().length > 0){
+      setTask([...task, newTask]);
+      setNewTask("")
+    }
+    
+  }
 
-  const onAddHandler = (content) => {
-    setTask([...task,content]);
+  function deleteTask(id) {
+    console.log(id);
+    const updateTask  = task.filter((item,idx) => idx!==id)
+    setTask(updateTask)
+    
+  }
+
+  function upTask(id) {
+    if (id === 0) return; // Prevent moving the first task up
+
+    let updatedTask = [...task]; // Copy the task array
+
+    // Correct swap syntax
+    [updatedTask[id], updatedTask[id - 1]] = [updatedTask[id - 1], updatedTask[id]];
+
+    setTask(updatedTask); 
+  }
+
+  function downTask(id) {
+
   }
 
   return (
     <>
       <div className="container">
         <h1>TO-DO List</h1>
-
-
-        <div class="task-summary">
-          <p>Total Tasks: <span id="total-tasks">0</span></p>
-          <p>Completed: <span id="completed-tasks">0</span></p>
+        <div>
+          <input type="text" placeholder='Write something' value={newTask} onChange={handleEventChange} />
+          <button onClick={addTask}>Add Task</button>
+        </div>
+        <div>
+          <ol>
+            {
+              task.map((item,idx) => (
+                <li key={idx}>
+                  <span>{item}</span>
+                  <button onClick={()=>deleteTask(idx)}>Delete</button>
+                  <button onClick={()=>upTask(idx)}>⬆️</button>
+                  <button onClick={()=>downTask(idx)}>⬇️</button>
+                </li>
+              ))
+            }
+          </ol>
         </div>
 
-
-        <div class="task">
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-          <input type="checkbox" />
-          <button>Delete Task</button>
-        </div>
-
-
-        <button class="add-task-btn" onClick={()=>onAddHandler}>Add Task</button>
+        
       </div>
 
     </>
