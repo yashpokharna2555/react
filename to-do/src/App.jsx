@@ -36,7 +36,10 @@ function App() {
   }
 
   function downTask(id) {
-
+    if(id === task.length-1)return;
+    let updatedTask = [...task];
+    [updatedTask[id],updatedTask[id+1]] = [updatedTask[id+1],updatedTask[id]];
+    setTask(updatedTask)
   }
 
   return (
