@@ -1,0 +1,34 @@
+# Node.js dependencies
+node_modules/
+
+# Build output
+/dist/
+/build/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+
+# npm package lock file
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# IDE configuration files
+.idea/
+.vscode/
+
+# Dependency directories for frontend
+frontend/node_modules/
+
+# Coverage reports
+coverage/
+
+# Other files that might be auto-generated
+*.swp
