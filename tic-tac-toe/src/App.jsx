@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function App() {
   const initializeBoard = () => Array(9).fill(null);
   const [board, setBoard] = useState(initializeBoard());
   const[isXnext, setIsXNext] = useState(true);
-
+  const [statusMessage, setStatusMessage] = useState("Player X turn")
   const winningCombination = [
     [0,1,2],
     [3,4,5],
@@ -16,11 +16,20 @@ function App() {
     [2,4,6]
   ]
   const calculateWinner = (board) => {
-    
+    for(let i = 0;i<winningCombination.length;i++){
+      const [a,b,c] = winningCombination[i];
+      if(board[a] && board[a] === board[b] && board[b] === board[c]){
+        return board[a];
+      }
+      
+    }
+    return null;
   }
   const handleSubmit = (id) => {
     // console.log(id);
     const winner = calculateWinner(board);
+    console.log(winner);
+    
     if(winner || board[id])return;
     const newArr = [...board];
     newArr[id] = isXnext ? 'X' : 'O';
@@ -31,14 +40,26 @@ function App() {
     
     
   }
+  
 
   const reset = () => {
     setBoard(initializeBoard())
   }
 
+  useEffect(() => {
+    const winner = calculateWinner(board);
+    if (winner) {
+      setStatusMessage(`Player ${winner} wins! 🎉`);
+    } else if (!board.includes(null)) {
+      setStatusMessage("It's a Draw! 🤝");
+    } else {
+      setStatusMessage(`Player ${isXnext ? 'X' : 'O'}'s turn`);
+    }
+  },[board, isXnext])
+
   return (
     <div className="flex justify-center items-center flex-col min-h-screen bg-gray-200 p-6">
-      <div className="text-lg font-semibold mb-4">Player {isXnext ? 'X' : 'O'} turn</div>
+      <div className="text-lg font-semibold mb-4">{statusMessage}</div>
       
       <div className="grid grid-cols-3 gap-2 bg-gray-300 p-4 rounded-lg">
         {board.map((item, idx) => (
