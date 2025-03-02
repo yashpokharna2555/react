@@ -18,6 +18,8 @@ const Home = () => {
             <td>1</td>
             <td>Yash</td>
             <td>22</td>
+            <td><button>Edit</button></td>
+            <td><button>Delete</button></td>
           </tr>
         </tbody>
       </table>
