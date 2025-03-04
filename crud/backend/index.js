@@ -2,6 +2,7 @@ const express = require("express")
 const cors = require("cors")
 const app = express()
 const connectDB = require('./config/db.config')
+const User = require('../backend/models/user.model')
 
 connectDB()
 app.use(cors())
@@ -11,8 +12,14 @@ app.get('/',(req,res) => {
     res.send("Welcome to teh srever")
     
 })
-app.post('/register', (req,res) => {
+app.post('/register', async(req,res) => {
     try {
+        const {email, password} = req.body
+        const user = await User.findOne({email: email});
+        if(user) {
+            res.send({success: false, message: "email already registered"});
+        }
+
         
     } catch (error) {
         
