@@ -1,14 +1,32 @@
 import React, { useState } from 'react'
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios"; 
+import { useNavigate } from 'react-router-dom';
 const Register = () => {
     const [data, setData] = useState({
         name: '',
         email: '',
         password: ''
     })
-    const handleSubmit = (e) => {
+    const navigate = useNavigate()
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        console.log(data);
+        
+        try {
+            const response = await axios.post('http://localhost:8000/api/register', data)
+            if(response.data.success){
+                console.log("Successful");
+                toast.success(response.data.message)
+                setData({ name: '', email: '', password: '' });
+                navigate('/login')
+            } else {
+                toast.error(response.data.message)
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Something went wrong!");
+        }
+        
         
     }
     return (
