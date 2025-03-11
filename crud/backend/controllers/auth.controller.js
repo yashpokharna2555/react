@@ -1,5 +1,6 @@
 const User = require('../model/user.model.js')
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken')
 const test = (req, res) => {
     res.send('Test route works!');
 };
@@ -49,7 +50,13 @@ const login = async (req, res) => {
         if(!passwordCompare){
             return res.json({success: false, message: "Password not match"})
         }
+        const token = jwt.sign(
+            { id: checkEmail._id, checkEmail: user.email, checkEmail: user.name },
+            process.env.SECRET_KEY,
+            { expiresIn: "1h" } // Token expires in 1 hour
+        );
 
+        res.cookie("token", token, { httpOnly: true, secure: false });
         return res.json({success: true, message: "Login successful", user: checkEmail})
 
     } catch (error) {
