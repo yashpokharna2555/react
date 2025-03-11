@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
@@ -14,10 +14,11 @@ const Login = () => {
         try {
             const response = await axios.post('http://localhost:8000/api/login', data);
             if (response.data.success) {
+                localStorage.setItem("token", response.data.token)
                 console.log("Successful");
                 toast.success(response.data.message)
                 setData({  email: '', password: '' });
-                navigate('/')
+                navigate('/dashboard')
             } else {
                 toast.error(response.data.message);
             }
