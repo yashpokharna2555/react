@@ -5,6 +5,13 @@ import axios from "axios";
 const Dashboard = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
+    const [studentData, setStudentData] = useState([
+        {
+            name: 'Yash',
+            age: '22',
+            grade: 'A'
+        }
+    ])
 
     useEffect(() => {
         const fetchDashboard = async () => {
@@ -34,6 +41,36 @@ const Dashboard = () => {
             ) : (
                 <h1>Loading...</h1>
             )}
+
+
+
+            <div>
+                <div>
+                    <button>Add Student</button>
+                </div>
+                <div>
+                    <table>
+                        <thead>
+                            <th>Student Name</th>
+                            <th>Age</th>
+                            <th>Grade</th>
+                        </thead>
+                        <tbody>
+                            {studentData.map((item, idx) => (
+                                <tr key={idx}> {/* Always provide a unique key */}
+                                    <td>{item.name}</td>
+                                    <td>{item.age}</td>
+                                    <td>{item.grade}</td>
+                                    <td>
+                                        <button>Edit</button>
+                                        <button>Delete</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     );
 };
