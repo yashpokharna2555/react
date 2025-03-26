@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import AddStudent from "../components/AddStudent";
 
 const Dashboard = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    
     const [studentData, setStudentData] = useState([
         {
             name: 'Yash',
@@ -46,8 +49,11 @@ const Dashboard = () => {
 
             <div>
                 <div>
-                    <button>Add Student</button>
+                    <button onClick={() => setShowModal(true)}>Add Student</button>
                 </div>
+                {
+                    showModal && <AddStudent />
+                }
                 <div>
                     <table>
                         <thead>
