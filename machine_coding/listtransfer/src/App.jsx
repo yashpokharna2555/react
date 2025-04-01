@@ -7,22 +7,49 @@ function App() {
   const [leftList, setLeftList] = useState(["React", "Javascript", "Angular", "Vue"])
   const [rightList, setRightList] = useState(["C++", "Java", "Python", "C"])
   const [checkedItems, setCheckedItems] = useState({
-    "React": false,
-    "Javascript": false,
-    "Angular": false,
-    "Vue": false,
-    "C++": false,
-    "Java": false,
-    "Python": false,
-    "C": false
+
   })
-  function handleLeft(){
-    setLeftList([...leftList,...rightList])
+  const handleChange = (item) => {
+    setCheckedItems((prev) => ({
+      ...prev,
+      [item]: !prev[item]
+    }))
+  }
+  function handleLeft() {
+    setLeftList([...leftList, ...rightList])
     setRightList([]);
   }
-  function handleRight(){
-    setRightList([...rightList,...leftList])
+  function handleRight() {
+    setRightList([...rightList, ...leftList])
     setLeftList([])
+  }
+
+  const moveToLeft = () => {
+    const selectedItems = rightList.filter((item)=> checkedItems[item]);
+    setLeftList([...leftList,...selectedItems]);
+    setRightList(rightList.filter((item)=> !checkedItems[item]))
+
+    setCheckedItems((prev) => {
+      const updated = {...prev}
+      selectedItems.forEach((item)=>(
+        updated[item] = false
+      ))
+      return updated
+    })
+  }
+  const moveToRight = () => {
+    const selectedItems = leftList.filter((item) => checkedItems[item]);
+    setRightList([...rightList,...selectedItems])
+    setLeftList(leftList.filter((item) => !checkedItems[item]))
+
+    setCheckedItems((prev) => {
+      const updated = {...prev};
+      selectedItems.forEach((item)=>(
+        updated[item] = false
+        
+      ))
+      return updated
+    })
   }
   return (
     <>
@@ -33,7 +60,7 @@ function App() {
             {
               leftList.map((list, idx) => (
                 <div key={idx}>
-                  <input type="checkbox" name="" id="" />
+                  <input type="checkbox" name="" id="" checked={checkedItems[list] || false} onChange={() => handleChange(list)} />
                   <label htmlFor="">{list}</label>
                 </div>
               ))
@@ -42,9 +69,20 @@ function App() {
           <div className="button-list">
             <div>
               <p onClick={handleRight}>➡️</p>
-              <p>▶️</p>
-              
-              <p>◀️</p>
+              {
+                Object.keys(checkedItems).some(key => checkedItems[key]) ? (
+                  <p onClick={moveToRight}>▶️</p>
+                ) : (
+                  <p></p>
+                )
+              }
+              {
+                Object.keys(checkedItems).some(key => checkedItems[key]) ? (
+                  <p onClick={moveToLeft}>◀️</p>
+                ) : (
+                  <p></p>
+                )
+              }
               <p onClick={handleLeft}>⬅️</p>
             </div>
           </div>
@@ -52,7 +90,7 @@ function App() {
             {
               rightList.map((list, idx) => (
                 <div key={idx}>
-                  <input type="checkbox" name="" id="" />
+                  <input type="checkbox" name="" id="" checked={checkedItems[list] || false} onChange={() => handleChange(list)} />
                   <label htmlFor="">{list}</label>
                 </div>
               ))
